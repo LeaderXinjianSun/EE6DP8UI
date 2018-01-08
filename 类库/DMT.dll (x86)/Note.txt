@@ -1,0 +1,8 @@
+1. The DMT.dll among different directories are identical.
+2. The DMT.lib between BCB6 and VC6 are different.
+
+
+
+
+
+
