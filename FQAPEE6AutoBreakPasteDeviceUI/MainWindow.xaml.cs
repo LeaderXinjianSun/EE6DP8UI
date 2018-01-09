@@ -1398,7 +1398,7 @@ namespace FQAPEE6AutoBreakPasteDeviceUI
         {
             bool ScanCMD = false, GigECMD = false;
             bool[] PlcAlarm;
-            bool m4005 = false, m4006 = false, m4007 = false, m4008 = false, m4009 = false, m4010 = false, m4013 = false, m4014 = false, m4022 = false, m4023 = false, m4030 = false, m4031 = false, m4032 = false, m4033 = false, m4034 = false, m4035 = false;
+            bool m4005 = false, m4006 = false, m4007 = false, m4008 = false, m4009 = false, m4010 = false, m4013 = false, m4014 = false, m4022 = false, m4023 = false, m4030 = false, m4031 = false, m4032 = false, m4033 = false, m4034 = false, m4035 = false, m4044 = false, m4050 = false, m4051 = false, m4052 = false, m4053 = false;
             bool m5010 = false, m5011 = false, m5012 = false;
 
             while (true)
@@ -1413,7 +1413,7 @@ namespace FQAPEE6AutoBreakPasteDeviceUI
                         TextX1.Text = ((double)CX / 100).ToString();
                         CY = aS300ModbusTCP.ReadDWORD("D10");
                         TextY1.Text = ((double)CY / 100).ToString();
-                        PlcAlarm = aS300ModbusTCP.ReadCoils("M4000", 48);
+                        PlcAlarm = aS300ModbusTCP.ReadCoils("M4000", 64);
                     }
                     if (ScanCMD != PLC_In[0])
                     {
@@ -1743,6 +1743,46 @@ namespace FQAPEE6AutoBreakPasteDeviceUI
                         if (m4035)
                         {
                             WriteAlarm("折线工位有产品");
+                        }
+                    }
+                    if (m4044 != PlcAlarm[44])
+                    {
+                        m4044 = PlcAlarm[44];
+                        if (m4044)
+                        {
+                            WriteAlarm("背胶超时报警");
+                        }
+                    }
+                    if (m4050 != PlcAlarm[50])
+                    {
+                        m4050 = PlcAlarm[50];
+                        if (m4050)
+                        {
+                            WriteAlarm("翻转-下压气缸-SET超时");
+                        }
+                    }
+                    if (m4051 != PlcAlarm[51])
+                    {
+                        m4051 = PlcAlarm[51];
+                        if (m4051)
+                        {
+                            WriteAlarm("翻转-下压气缸-RST超时");
+                        }
+                    }
+                    if (m4052 != PlcAlarm[52])
+                    {
+                        m4052 = PlcAlarm[52];
+                        if (m4052)
+                        {
+                            WriteAlarm("翻转-前推气缸-SET超时");
+                        }
+                    }
+                    if (m4053 != PlcAlarm[53])
+                    {
+                        m4053 = PlcAlarm[53];
+                        if (m4053)
+                        {
+                            WriteAlarm("翻转-前推气缸-RST超时");
                         }
                     }
                     //throw new Exception(PLC_In[0].ToString());
