@@ -769,6 +769,15 @@ namespace FQAPEE6AutoBreakPasteDeviceUI
                 case 1:
                     rs += "dp8";
                     break;
+                case 2:
+                    rs += "lc6";
+                    break;
+                case 3:
+                    rs += "kz4";
+                    break;
+                case 4:
+                    rs += "kz3";
+                    break;
                 default:
                     break;
             }
@@ -1230,6 +1239,270 @@ namespace FQAPEE6AutoBreakPasteDeviceUI
                                     else
                                     {
                                         Rb[17 - i] = false;
+                                    }
+
+                                }
+                                bool[] _AllowBarRecord;
+                                lock (modbustcp)
+                                {
+                                    aS300ModbusTCP.WriteMultCoils("M5103", Rb);
+                                    _AllowBarRecord = aS300ModbusTCP.ReadCoils("M6000", 5);
+                                    //aS300ModbusTCP.WriteSigleCoil("M5100", true);
+                                }
+                                if (UpdateRecode(NewStr, _AllowBarRecord[4]))
+                                {
+                                    lock (modbustcp)
+                                    {
+                                        aS300ModbusTCP.WriteSigleCoil("M5100", true);
+                                    }
+
+                                }
+                                else
+                                {
+                                    lock (modbustcp)
+                                    {
+                                        aS300ModbusTCP.WriteSigleCoil("M5101", true);
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                lock (modbustcp)
+                                {
+                                    aS300ModbusTCP.WriteSigleCoil("M5101", true);
+                                }
+                            }
+                            break;
+                        case 2:
+                            if (FindStr.Length == 30)
+                            {
+                                bool[] Rb = new bool[30];
+                                for (int i = 0; i < 5; i++)
+                                {
+                                    if (FindStr[0 + 6 * i] == '1')
+                                    {
+                                        Rb[0 + i] = true;
+                                    }
+                                    else
+                                    {
+                                        Rb[0 + i] = false;
+                                    }
+                                    if (FindStr[1 + 6 * i] == '1')
+                                    {
+                                        Rb[5 + i] = true;
+                                    }
+                                    else
+                                    {
+                                        Rb[5 + i] = false;
+                                    }
+
+                                    if (FindStr[2 + 6 * i] == '1')
+                                    {
+                                        Rb[10 + i] = true;
+                                    }
+                                    else
+                                    {
+                                        Rb[10 + i] = false;
+                                    }
+                                    if (FindStr[3 + 6 * i] == '1')
+                                    {
+                                        Rb[29 - i] = true;
+                                    }
+                                    else
+                                    {
+                                        Rb[29 - i] = false;
+                                    }
+                                    if (FindStr[4 + 6 * i] == '1')
+                                    {
+                                        Rb[24 - i] = true;
+                                    }
+                                    else
+                                    {
+                                        Rb[24 - i] = false;
+                                    }
+                                    if (FindStr[5 + 6 * i] == '1')
+                                    {
+                                        Rb[19 - i] = true;
+                                    }
+                                    else
+                                    {
+                                        Rb[19 - i] = false;
+                                    }
+
+                                }
+                                bool[] _AllowBarRecord;
+                                lock (modbustcp)
+                                {
+                                    aS300ModbusTCP.WriteMultCoils("M5103", Rb);
+                                    _AllowBarRecord = aS300ModbusTCP.ReadCoils("M6000", 5);
+                                    //aS300ModbusTCP.WriteSigleCoil("M5100", true);
+                                }
+                                if (UpdateRecode(NewStr, _AllowBarRecord[4]))
+                                {
+                                    lock (modbustcp)
+                                    {
+                                        aS300ModbusTCP.WriteSigleCoil("M5100", true);
+                                    }
+
+                                }
+                                else
+                                {
+                                    lock (modbustcp)
+                                    {
+                                        aS300ModbusTCP.WriteSigleCoil("M5101", true);
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                lock (modbustcp)
+                                {
+                                    aS300ModbusTCP.WriteSigleCoil("M5101", true);
+                                }
+                            }
+                            break;
+                        case 3:
+                            if (FindStr.Length == 24)
+                            {
+                                bool[] Rb = new bool[24];
+                                for (int i = 0; i < 3; i++)
+                                {
+                                    if (FindStr[0 + 8 * i] == '1')
+                                    {
+                                        Rb[0 + i] = true;
+                                    }
+                                    else
+                                    {
+                                        Rb[0 + i] = false;
+                                    }
+                                    if (FindStr[1 + 8 * i] == '1')
+                                    {
+                                        Rb[3 + i] = true;
+                                    }
+                                    else
+                                    {
+                                        Rb[3 + i] = false;
+                                    }
+
+                                    if (FindStr[2 + 8 * i] == '1')
+                                    {
+                                        Rb[6 + i] = true;
+                                    }
+                                    else
+                                    {
+                                        Rb[6 + i] = false;
+                                    }
+                                    if (FindStr[3 + 8 * i] == '1')
+                                    {
+                                        Rb[9 + i] = true;
+                                    }
+                                    else
+                                    {
+                                        Rb[9 + i] = false;
+                                    }
+                                    if (FindStr[4 + 8 * i] == '1')
+                                    {
+                                        Rb[23 - i] = true;
+                                    }
+                                    else
+                                    {
+                                        Rb[23 - i] = false;
+                                    }
+                                    if (FindStr[5 + 8 * i] == '1')
+                                    {
+                                        Rb[20 - i] = true;
+                                    }
+                                    else
+                                    {
+                                        Rb[20 - i] = false;
+                                    }
+                                    if (FindStr[6 + 8 * i] == '1')
+                                    {
+                                        Rb[17 - i] = true;
+                                    }
+                                    else
+                                    {
+                                        Rb[17 - i] = false;
+                                    }
+                                    if (FindStr[7 + 8 * i] == '1')
+                                    {
+                                        Rb[14 - i] = true;
+                                    }
+                                    else
+                                    {
+                                        Rb[14 - i] = false;
+                                    }
+
+                                }
+                                bool[] _AllowBarRecord;
+                                lock (modbustcp)
+                                {
+                                    aS300ModbusTCP.WriteMultCoils("M5103", Rb);
+                                    _AllowBarRecord = aS300ModbusTCP.ReadCoils("M6000", 5);
+                                    //aS300ModbusTCP.WriteSigleCoil("M5100", true);
+                                }
+                                if (UpdateRecode(NewStr, _AllowBarRecord[4]))
+                                {
+                                    lock (modbustcp)
+                                    {
+                                        aS300ModbusTCP.WriteSigleCoil("M5100", true);
+                                    }
+
+                                }
+                                else
+                                {
+                                    lock (modbustcp)
+                                    {
+                                        aS300ModbusTCP.WriteSigleCoil("M5101", true);
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                lock (modbustcp)
+                                {
+                                    aS300ModbusTCP.WriteSigleCoil("M5101", true);
+                                }
+                            }
+                            break;
+                        case 4:
+                            if (FindStr.Length == 20)
+                            {
+                                bool[] Rb = new bool[20];
+                                for (int i = 0; i < 5; i++)//列数
+                                {
+                                    if (FindStr[0 + 4 * i] == '1')//圈内个数
+                                    {
+                                        Rb[0 + i] = true;
+                                    }
+                                    else
+                                    {
+                                        Rb[0 + i] = false;
+                                    }
+                                    if (FindStr[1 + 4 * i] == '1')
+                                    {
+                                        Rb[5 + i] = true;//列数
+                                    }
+                                    else
+                                    {
+                                        Rb[5 + i] = false;
+                                    }
+
+                                    if (FindStr[2 + 4 * i] == '1')
+                                    {
+                                        Rb[19 - i] = true;
+                                    }
+                                    else
+                                    {
+                                        Rb[19 - i] = false;
+                                    }
+                                    if (FindStr[3 + 4 * i] == '1')
+                                    {
+                                        Rb[14 - i] = true;
+                                    }
+                                    else
+                                    {
+                                        Rb[14 - i] = false;
                                     }
 
                                 }
@@ -1815,6 +2088,18 @@ namespace FQAPEE6AutoBreakPasteDeviceUI
                                     DP8Checkbox.IsChecked = true;
                                     //MsgTextBox.Text = AddMessage("DP8 程序");
                                     break;
+                                case 2:
+                                    LC6Checkbox.IsChecked = true;
+
+                                    break;
+                                case 3:
+                                    KZ4Checkbox.IsChecked = true;
+
+                                    break;
+                                case 4:
+                                    KZ3Checkbox.IsChecked = true;
+
+                                    break;
                                 default:
                                     break;
                             }
@@ -2373,6 +2658,9 @@ namespace FQAPEE6AutoBreakPasteDeviceUI
                     aS300ModbusTCP.WriteSigleRegister("D20040", 0);
                 }
                 DP8Checkbox.IsChecked = false;
+                LC6Checkbox.IsChecked = false;
+                KZ4Checkbox.IsChecked = false;
+                KZ3Checkbox.IsChecked = false;
                 EE6Mode = 0;
                 MsgTextBox.Text = AddMessage("EE6 程序");
             }
@@ -2380,6 +2668,9 @@ namespace FQAPEE6AutoBreakPasteDeviceUI
             {
                 DP8Checkbox.IsChecked = false;
                 EE6Checkbox.IsChecked = false;
+                LC6Checkbox.IsChecked = false;
+                KZ4Checkbox.IsChecked = false;
+                KZ3Checkbox.IsChecked = false;
             }
 
 
@@ -2396,6 +2687,9 @@ namespace FQAPEE6AutoBreakPasteDeviceUI
                     aS300ModbusTCP.WriteSigleRegister("D20040", 1);
                 }
                 EE6Checkbox.IsChecked = false;
+                LC6Checkbox.IsChecked = false;
+                KZ4Checkbox.IsChecked = false;
+                KZ3Checkbox.IsChecked = false;
                 EE6Mode = 1;
                 MsgTextBox.Text = AddMessage("DP8 程序");
             }
@@ -2403,6 +2697,90 @@ namespace FQAPEE6AutoBreakPasteDeviceUI
             {
                 DP8Checkbox.IsChecked = false;
                 EE6Checkbox.IsChecked = false;
+                LC6Checkbox.IsChecked = false;
+                KZ4Checkbox.IsChecked = false;
+                KZ3Checkbox.IsChecked = false;
+            }
+
+        }
+        private void LC6Checkbox_Checked(object sender, RoutedEventArgs e)
+        {
+            LoadinCount = 0;
+            if (PlcStatus)
+            {
+
+                lock (modbustcp)
+                {
+                    aS300ModbusTCP.WriteSigleRegister("D20040", 2);
+                }
+                DP8Checkbox.IsChecked = false;
+                EE6Checkbox.IsChecked = false;
+                KZ4Checkbox.IsChecked = false;
+                KZ3Checkbox.IsChecked = false;
+                EE6Mode = 2;
+                MsgTextBox.Text = AddMessage("DP8 程序");
+            }
+            else
+            {
+                DP8Checkbox.IsChecked = false;
+                EE6Checkbox.IsChecked = false;
+                LC6Checkbox.IsChecked = false;
+                KZ4Checkbox.IsChecked = false;
+                KZ3Checkbox.IsChecked = false;
+            }
+
+        }
+        private void KZ4Checkbox_Checked(object sender, RoutedEventArgs e)
+        {
+            LoadinCount = 0;
+            if (PlcStatus)
+            {
+
+                lock (modbustcp)
+                {
+                    aS300ModbusTCP.WriteSigleRegister("D20040", 3);
+                }
+                DP8Checkbox.IsChecked = false;
+                EE6Checkbox.IsChecked = false;
+                LC6Checkbox.IsChecked = false;
+                KZ3Checkbox.IsChecked = false;
+                EE6Mode = 3;
+                MsgTextBox.Text = AddMessage("DP8 程序");
+            }
+            else
+            {
+                DP8Checkbox.IsChecked = false;
+                EE6Checkbox.IsChecked = false;
+                LC6Checkbox.IsChecked = false;
+                KZ4Checkbox.IsChecked = false;
+                KZ3Checkbox.IsChecked = false;
+            }
+
+        }
+        private void KZ3Checkbox_Checked(object sender, RoutedEventArgs e)
+        {
+            LoadinCount = 0;
+            if (PlcStatus)
+            {
+
+                lock (modbustcp)
+                {
+                    aS300ModbusTCP.WriteSigleRegister("D20040", 4);
+                }
+                DP8Checkbox.IsChecked = false;
+                EE6Checkbox.IsChecked = false;
+                LC6Checkbox.IsChecked = false;
+                KZ4Checkbox.IsChecked = false;
+                EE6Mode = 4;
+                MsgTextBox.Text = AddMessage("DP8 程序");
+            }
+            else
+            {
+                DP8Checkbox.IsChecked = false;
+                EE6Checkbox.IsChecked = false;
+                LC6Checkbox.IsChecked = false;
+                KZ4Checkbox.IsChecked = false;
+                KZ3Checkbox.IsChecked = false;
             }
 
         }
@@ -2598,6 +2976,18 @@ namespace FQAPEE6AutoBreakPasteDeviceUI
                     case 1:
                         DP8Checkbox.IsChecked = true;
                         //MsgTextBox.Text = AddMessage("DP8 程序");
+                        break;
+                    case 2:
+                        LC6Checkbox.IsChecked = true;
+                        
+                        break;
+                    case 3:
+                        KZ4Checkbox.IsChecked = true;
+                        
+                        break;
+                    case 4:
+                        KZ3Checkbox.IsChecked = true;
+                        
                         break;
                     default:
                         break;

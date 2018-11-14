@@ -8,7 +8,7 @@
         xmlns:halcon="clr-namespace:HalconDotNet;assembly=halcondotnet"
         
         mc:Ignorable="d"
-        Title="FQAPEE6AutoBreakPasteDeviceUI 2018010901" Height="600" Width="1024"
+        Title="FQAPEE6AutoBreakPasteDeviceUI 2018111401" Height="600" Width="1024"
                    WindowStartupLocation="CenterScreen"
                      BorderThickness="0" GlowBrush="Black"  ResizeMode="CanResizeWithGrip" WindowTransitionsEnabled="True" Loaded="MetroWindow_Loaded" Closed="MetroWindow_Closed" Closing="MetroWindow_Closing" WindowState="Maximized">
     <metro:MetroWindow.Resources>
@@ -169,6 +169,9 @@
                         <StackPanel Orientation="Horizontal">
                             <CheckBox Content="EE6" Margin="10,0" Name="EE6Checkbox" Checked="EE6Checkbox_Checked"></CheckBox>
                             <CheckBox Content="DP8" Name="DP8Checkbox" Checked="DP8Checkbox_Checked"></CheckBox>
+                            <CheckBox Content="LC6" Name="LC6Checkbox" Checked="LC6Checkbox_Checked"></CheckBox>
+                            <CheckBox Content="KZ4" Name="KZ4Checkbox" Checked="KZ4Checkbox_Checked"></CheckBox>
+                            <CheckBox Content="KZ3" Name="KZ3Checkbox" Checked="KZ3Checkbox_Checked"></CheckBox>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
                             <TextBlock Width="100" Margin="10,0,10,0" Text="翻转破真空计数"></TextBlock>
