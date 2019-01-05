@@ -778,6 +778,12 @@ namespace FQAPEE6AutoBreakPasteDeviceUI
                 case 4:
                     rs += "kz3";
                     break;
+                case 5:
+                    rs += "lm8";
+                    break;
+                case 6:
+                    rs += "lm9";
+                    break;
                 default:
                     break;
             }
@@ -1537,6 +1543,165 @@ namespace FQAPEE6AutoBreakPasteDeviceUI
                                 }
                             }
                             break;
+                        case 5:
+                            if (FindStr.Length == 20)
+                            {
+                                bool[] Rb = new bool[20];
+                                for (int i = 0; i < 5; i++)//列数
+                                {
+                                    if (FindStr[0 + 4 * i] == '1')//圈内个数
+                                    {
+                                        Rb[0 + i] = true;
+                                    }
+                                    else
+                                    {
+                                        Rb[0 + i] = false;
+                                    }
+                                    if (FindStr[1 + 4 * i] == '1')
+                                    {
+                                        Rb[5 + i] = true;//列数
+                                    }
+                                    else
+                                    {
+                                        Rb[5 + i] = false;
+                                    }
+
+                                    if (FindStr[2 + 4 * i] == '1')
+                                    {
+                                        Rb[19 - i] = true;
+                                    }
+                                    else
+                                    {
+                                        Rb[19 - i] = false;
+                                    }
+                                    if (FindStr[3 + 4 * i] == '1')
+                                    {
+                                        Rb[14 - i] = true;
+                                    }
+                                    else
+                                    {
+                                        Rb[14 - i] = false;
+                                    }
+
+                                }
+                                bool[] _AllowBarRecord;
+                                lock (modbustcp)
+                                {
+                                    aS300ModbusTCP.WriteMultCoils("M5103", Rb);
+                                    _AllowBarRecord = aS300ModbusTCP.ReadCoils("M6000", 5);
+                                    //aS300ModbusTCP.WriteSigleCoil("M5100", true);
+                                }
+                                if (UpdateRecode(NewStr, _AllowBarRecord[4]))
+                                {
+                                    lock (modbustcp)
+                                    {
+                                        aS300ModbusTCP.WriteSigleCoil("M5100", true);
+                                    }
+
+                                }
+                                else
+                                {
+                                    lock (modbustcp)
+                                    {
+                                        aS300ModbusTCP.WriteSigleCoil("M5101", true);
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                lock (modbustcp)
+                                {
+                                    aS300ModbusTCP.WriteSigleCoil("M5101", true);
+                                }
+                            }
+                            break;
+                        case 6:
+                            if (FindStr.Length == 36)
+                            {
+                                bool[] Rb = new bool[36];
+                                for (int i = 0; i < 6; i++)
+                                {
+                                    if (FindStr[0 + 6 * i] == '1')
+                                    {
+                                        Rb[0 + i] = true;
+                                    }
+                                    else
+                                    {
+                                        Rb[0 + i] = false;
+                                    }
+                                    if (FindStr[1 + 6 * i] == '1')
+                                    {
+                                        Rb[6 + i] = true;
+                                    }
+                                    else
+                                    {
+                                        Rb[6 + i] = false;
+                                    }
+                                    if (FindStr[2 + 6 * i] == '1')
+                                    {
+                                        Rb[12 + i] = true;
+                                    }
+                                    else
+                                    {
+                                        Rb[12 + i] = false;
+                                    }
+                                    if (FindStr[3 + 6 * i] == '1')
+                                    {
+                                        Rb[35 - i] = true;
+                                    }
+                                    else
+                                    {
+                                        Rb[35 - i] = false;
+                                    }
+                                    if (FindStr[4 + 6 * i] == '1')
+                                    {
+                                        Rb[29 - i] = true;
+                                    }
+                                    else
+                                    {
+                                        Rb[29 - i] = false;
+                                    }
+                                    if (FindStr[5 + 6 * i] == '1')
+                                    {
+                                        Rb[23 - i] = true;
+                                    }
+                                    else
+                                    {
+                                        Rb[23 - i] = false;
+                                    }
+                                }
+                                bool[] _AllowBarRecord;
+                                lock (modbustcp)
+                                {
+                                    aS300ModbusTCP.WriteMultCoils("M5103", Rb);
+                                    _AllowBarRecord = aS300ModbusTCP.ReadCoils("M6000", 5);
+                                    //aS300ModbusTCP.WriteSigleCoil("M5100", true);
+                                }
+                                if (UpdateRecode(NewStr, _AllowBarRecord[4]))
+                                {
+                                    lock (modbustcp)
+                                    {
+                                        aS300ModbusTCP.WriteSigleCoil("M5100", true);
+                                    }
+
+
+                                }
+                                else
+                                {
+                                    lock (modbustcp)
+                                    {
+                                        aS300ModbusTCP.WriteSigleCoil("M5101", true);
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                lock (modbustcp)
+                                {
+                                    aS300ModbusTCP.WriteSigleCoil("M5101", true);
+                                }
+                            }
+                            break;
                         default:
                             break;
                     }
@@ -2100,6 +2265,14 @@ namespace FQAPEE6AutoBreakPasteDeviceUI
                                     KZ3Checkbox.IsChecked = true;
 
                                     break;
+                                case 5:
+                                    LM8Checkbox.IsChecked = true;
+
+                                    break;
+                                case 6:
+                                    LM9Checkbox.IsChecked = true;
+
+                                    break;
                                 default:
                                     break;
                             }
@@ -2661,6 +2834,8 @@ namespace FQAPEE6AutoBreakPasteDeviceUI
                 LC6Checkbox.IsChecked = false;
                 KZ4Checkbox.IsChecked = false;
                 KZ3Checkbox.IsChecked = false;
+                LM8Checkbox.IsChecked = false;
+                LM9Checkbox.IsChecked = false;
                 EE6Mode = 0;
                 MsgTextBox.Text = AddMessage("EE6 程序");
             }
@@ -2671,6 +2846,8 @@ namespace FQAPEE6AutoBreakPasteDeviceUI
                 LC6Checkbox.IsChecked = false;
                 KZ4Checkbox.IsChecked = false;
                 KZ3Checkbox.IsChecked = false;
+                LM8Checkbox.IsChecked = false;
+                LM9Checkbox.IsChecked = false;
             }
 
 
@@ -2690,6 +2867,8 @@ namespace FQAPEE6AutoBreakPasteDeviceUI
                 LC6Checkbox.IsChecked = false;
                 KZ4Checkbox.IsChecked = false;
                 KZ3Checkbox.IsChecked = false;
+                LM8Checkbox.IsChecked = false;
+                LM9Checkbox.IsChecked = false;
                 EE6Mode = 1;
                 MsgTextBox.Text = AddMessage("DP8 程序");
             }
@@ -2700,6 +2879,8 @@ namespace FQAPEE6AutoBreakPasteDeviceUI
                 LC6Checkbox.IsChecked = false;
                 KZ4Checkbox.IsChecked = false;
                 KZ3Checkbox.IsChecked = false;
+                LM8Checkbox.IsChecked = false;
+                LM9Checkbox.IsChecked = false;
             }
 
         }
@@ -2717,8 +2898,10 @@ namespace FQAPEE6AutoBreakPasteDeviceUI
                 EE6Checkbox.IsChecked = false;
                 KZ4Checkbox.IsChecked = false;
                 KZ3Checkbox.IsChecked = false;
+                LM8Checkbox.IsChecked = false;
+                LM9Checkbox.IsChecked = false;
                 EE6Mode = 2;
-                MsgTextBox.Text = AddMessage("DP8 程序");
+                MsgTextBox.Text = AddMessage("LC6 程序");
             }
             else
             {
@@ -2727,6 +2910,8 @@ namespace FQAPEE6AutoBreakPasteDeviceUI
                 LC6Checkbox.IsChecked = false;
                 KZ4Checkbox.IsChecked = false;
                 KZ3Checkbox.IsChecked = false;
+                LM8Checkbox.IsChecked = false;
+                LM9Checkbox.IsChecked = false;
             }
 
         }
@@ -2744,8 +2929,10 @@ namespace FQAPEE6AutoBreakPasteDeviceUI
                 EE6Checkbox.IsChecked = false;
                 LC6Checkbox.IsChecked = false;
                 KZ3Checkbox.IsChecked = false;
+                LM8Checkbox.IsChecked = false;
+                LM9Checkbox.IsChecked = false;
                 EE6Mode = 3;
-                MsgTextBox.Text = AddMessage("DP8 程序");
+                MsgTextBox.Text = AddMessage("KZ4 程序");
             }
             else
             {
@@ -2754,6 +2941,8 @@ namespace FQAPEE6AutoBreakPasteDeviceUI
                 LC6Checkbox.IsChecked = false;
                 KZ4Checkbox.IsChecked = false;
                 KZ3Checkbox.IsChecked = false;
+                LM8Checkbox.IsChecked = false;
+                LM9Checkbox.IsChecked = false;
             }
 
         }
@@ -2771,8 +2960,10 @@ namespace FQAPEE6AutoBreakPasteDeviceUI
                 EE6Checkbox.IsChecked = false;
                 LC6Checkbox.IsChecked = false;
                 KZ4Checkbox.IsChecked = false;
+                LM8Checkbox.IsChecked = false;
+                LM9Checkbox.IsChecked = false;
                 EE6Mode = 4;
-                MsgTextBox.Text = AddMessage("DP8 程序");
+                MsgTextBox.Text = AddMessage("KZ3 程序");
             }
             else
             {
@@ -2781,10 +2972,73 @@ namespace FQAPEE6AutoBreakPasteDeviceUI
                 LC6Checkbox.IsChecked = false;
                 KZ4Checkbox.IsChecked = false;
                 KZ3Checkbox.IsChecked = false;
+                LM8Checkbox.IsChecked = false;
+                LM9Checkbox.IsChecked = false;
             }
 
         }
+        private void LM8Checkbox_Checked(object sender, RoutedEventArgs e)
+        {
+            LoadinCount = 0;
+            if (PlcStatus)
+            {
 
+                lock (modbustcp)
+                {
+                    aS300ModbusTCP.WriteSigleRegister("D20040", 5);
+                }
+                DP8Checkbox.IsChecked = false;
+                EE6Checkbox.IsChecked = false;
+                LC6Checkbox.IsChecked = false;
+                KZ4Checkbox.IsChecked = false;
+                LM9Checkbox.IsChecked = false;
+                KZ3Checkbox.IsChecked = false;
+                EE6Mode = 5;
+                MsgTextBox.Text = AddMessage("LM8 程序");
+            }
+            else
+            {
+                DP8Checkbox.IsChecked = false;
+                EE6Checkbox.IsChecked = false;
+                LC6Checkbox.IsChecked = false;
+                KZ4Checkbox.IsChecked = false;
+                KZ3Checkbox.IsChecked = false;
+                LM8Checkbox.IsChecked = false;
+                LM9Checkbox.IsChecked = false;
+            }
+
+        }
+        private void LM9Checkbox_Checked(object sender, RoutedEventArgs e)
+        {
+            LoadinCount = 0;
+            if (PlcStatus)
+            {
+
+                lock (modbustcp)
+                {
+                    aS300ModbusTCP.WriteSigleRegister("D20040", 6);
+                }
+                DP8Checkbox.IsChecked = false;
+                EE6Checkbox.IsChecked = false;
+                LC6Checkbox.IsChecked = false;
+                KZ4Checkbox.IsChecked = false;
+                LM8Checkbox.IsChecked = false;
+                KZ3Checkbox.IsChecked = false;
+                EE6Mode = 6;
+                MsgTextBox.Text = AddMessage("LM9 程序");
+            }
+            else
+            {
+                DP8Checkbox.IsChecked = false;
+                EE6Checkbox.IsChecked = false;
+                LC6Checkbox.IsChecked = false;
+                KZ4Checkbox.IsChecked = false;
+                KZ3Checkbox.IsChecked = false;
+                LM8Checkbox.IsChecked = false;
+                LM9Checkbox.IsChecked = false;
+            }
+
+        }
         private void FunctionButton1_Click(object sender, RoutedEventArgs e)
         {
             LoadinCount = 0;
@@ -2988,6 +3242,14 @@ namespace FQAPEE6AutoBreakPasteDeviceUI
                     case 4:
                         KZ3Checkbox.IsChecked = true;
                         
+                        break;
+                    case 5:
+                        LM8Checkbox.IsChecked = true;
+
+                        break;
+                    case 6:
+                        LM9Checkbox.IsChecked = true;
+
                         break;
                     default:
                         break;
