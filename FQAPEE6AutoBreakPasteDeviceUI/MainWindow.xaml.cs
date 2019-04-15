@@ -1759,6 +1759,7 @@ namespace FQAPEE6AutoBreakPasteDeviceUI
             {
                 OraDB oraDB = new OraDB("fpcsfcdb", "sfcdar", "sfcdardata");
                 string tablename = "sfcdata.barautbind";
+                string tablename1 = "sfcdata.zx_pnl_data";
                 if (oraDB.isConnect())
                 {
                     arrField[0] = "SCPNLBAR";
@@ -1789,8 +1790,13 @@ namespace FQAPEE6AutoBreakPasteDeviceUI
                                 }
                                 string[] counts = { DateTime.Now.ToString(), CoorPar.ZhiJuBianHao, CoorPar.ZhiJuMingChen, CoorPar.ZheXianRenYuan, CoorPar.JiTaiBianHao, barcode, PanelDt.Rows[i]["SCBARCODE"].ToString() };
                                 savetocsv(filename, counts);
+
+                                string[] arrField1 = { "BLDATE", "BLID", "BLNAME", "BLUID", "BLMID", "SCBARCODE" };
+                                string[] arrValue1 = { DateTime.Now.ToString(), CoorPar.ZhiJuBianHao, CoorPar.ZhiJuMingChen, CoorPar.ZheXianRenYuan, CoorPar.JiTaiBianHao, PanelDt.Rows[i]["SCBARCODE"].ToString() };
+                                oraDB.insertSQL2(tablename1.ToUpper(), arrField1, arrValue1);
                             }
                             MsgTextBox.Text = AddMessage(barcode + "数据更新完成");
+                            oraDB.disconnect();
                             return true;
 
                         }
@@ -1821,6 +1827,7 @@ namespace FQAPEE6AutoBreakPasteDeviceUI
 
 
         }
+       
         private void WriteAlarm(string str)
         {
             string filename = "D:\\alarm\\" + "alarm" + GetRecordFileName() + ".csv";

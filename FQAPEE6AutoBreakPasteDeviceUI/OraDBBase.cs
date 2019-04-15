@@ -339,6 +339,33 @@ namespace 臻鼎科技OraDB
             strSQL += str2.Substring(0, str2.Length - 1) + ")";
             return strSQL;
         }
+        public static string getInsertString2(string strTable, string[] arrField, string[] arrValue)
+        {
+            string strSQL = string.Empty;
+            if (arrField.Length != arrValue.Length)
+            {
+                throw new Exception("字段的个数和值的个数不一致");
+            }
+            string str1 = "", str2 = "";
+            strSQL = "insert into " + strTable + "(";
+            for (int i = 0; i < arrField.Length; i++)
+            {
+                if (arrField[i] == "BLDATE")
+                {
+                    str1 += string.Format("{0},", arrField[i]);
+                    str2 += string.Format("{0},", arrValue[i]);
+                }
+                else
+                {
+                    str1 += string.Format("{0},", arrField[i]);
+                    str2 += string.Format("'{0}',", arrValue[i]);
+                }
+
+            }
+            strSQL += str1.Substring(0, str1.Length - 1) + ") values (";
+            strSQL += str2.Substring(0, str2.Length - 1) + ")";
+            return strSQL;
+        }
         public static string getInsertString1(string strTable, string[] arrField, string[] arrValue)
         {
             string strSQL = string.Empty;
@@ -407,6 +434,10 @@ namespace 臻鼎科技OraDB
         public int insertSQL(string strTable, string[] arrField, string[] arrValue)
         {
             return executeNonQuery(getInsertString(strTable, arrField, arrValue));
+        }
+        public int insertSQL2(string strTable, string[] arrField, string[] arrValue)
+        {
+            return executeNonQuery(getInsertString2(strTable, arrField, arrValue));
         }
         public int insertSQL1(string strTable, string[] arrField, string[] arrValue)
         {
