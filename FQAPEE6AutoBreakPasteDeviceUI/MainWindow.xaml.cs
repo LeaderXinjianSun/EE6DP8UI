@@ -1758,47 +1758,33 @@ namespace FQAPEE6AutoBreakPasteDeviceUI
             try
             {
                 OraDB oraDB = new OraDB("fpcsfcdb", "sfcdar", "sfcdardata");
-                string tablename = "sfcdata.barautbind";
+                //string tablename = "sfcdata.barautbind";
                 string tablename1 = "sfcdata.zx_pnl_data";
                 if (oraDB.isConnect())
                 {
-                    arrField[0] = "SCPNLBAR";
+                    arrField[0] = "SCBARCODE";
                     arrValue[0] = barcode;
-                    DataSet s1 = oraDB.selectSQL(tablename.ToUpper(), arrField, arrValue);
+                    DataSet s1 = oraDB.selectSQL(tablename1.ToUpper(), arrField, arrValue);
                     DataTable PanelDt = s1.Tables[0];
                     if (PanelDt.Rows.Count == 0)
                     {
-                        MsgTextBox.Text = AddMessage(barcode + "数据库无记录");
+                        MsgTextBox.Text = AddMessage(barcode + "插入新数据");
+                        string[] arrField1 = { "BLDATE", "BLID", "BLNAME", "BLUID", "BLMID", "SCBARCODE" };
+                        string[] arrValue1 = { DateTime.Now.ToString(), CoorPar.ZhiJuBianHao, CoorPar.ZhiJuMingChen, CoorPar.ZheXianRenYuan, CoorPar.JiTaiBianHao, barcode };
+                        oraDB.insertSQL2(tablename1.ToUpper(), arrField1, arrValue1);
                         oraDB.disconnect();
-                        return false;
+                        return true;
                     }
                     else
                     {
-                        if (PanelDt.Rows[0]["BLID"].ToString() == "" || mode)
+                        if (mode)
                         {
-                            string[,] arrFieldAndNewValue = { { "BLDATE", "to_date('" + DateTime.Now.ToString() + "', 'yyyy/mm/dd hh24:mi:ss')" }, { "BLID", CoorPar.ZhiJuBianHao }, { "BLNAME", CoorPar.ZhiJuMingChen }, { "BLUID", CoorPar.ZheXianRenYuan }, { "BLMID", CoorPar.JiTaiBianHao } };
-
-                            string[,] arrFieldAndOldValue = { { "SCPNLBAR", barcode } };
-                            oraDB.updateSQL2(tablename.ToUpper(), arrFieldAndNewValue, arrFieldAndOldValue);
-                            for (int i = 0; i < PanelDt.Rows.Count; i++)
-                            {
-                                //string[,] arrFieldAndNewValue = { { "BLDATE", "to_date('" + DateTime.Now.ToString() + "', 'yyyy/mm/dd hh24:mi:ss')" }, { "BLID", CoorPar.ZhiJuBianHao }, { "BLNAME", CoorPar.ZhiJuMingChen }, { "BLUID", CoorPar.ZheXianRenYuan }, { "BLMID", CoorPar.JiTaiBianHao } };
-                                if (!File.Exists(filename))
-                                {
-                                    string[] heads = { "BLDATE", "BLID", "BLNAME", "BLUID", "BLMID", "SCPNLBAR", "SCBARCODE" };
-                                    savetocsv(filename, heads);
-                                }
-                                string[] counts = { DateTime.Now.ToString(), CoorPar.ZhiJuBianHao, CoorPar.ZhiJuMingChen, CoorPar.ZheXianRenYuan, CoorPar.JiTaiBianHao, barcode, PanelDt.Rows[i]["SCBARCODE"].ToString() };
-                                savetocsv(filename, counts);
-
-                                string[] arrField1 = { "BLDATE", "BLID", "BLNAME", "BLUID", "BLMID", "SCBARCODE" };
-                                string[] arrValue1 = { DateTime.Now.ToString(), CoorPar.ZhiJuBianHao, CoorPar.ZhiJuMingChen, CoorPar.ZheXianRenYuan, CoorPar.JiTaiBianHao, PanelDt.Rows[i]["SCBARCODE"].ToString() };
-                                oraDB.insertSQL2(tablename1.ToUpper(), arrField1, arrValue1);
-                            }
-                            MsgTextBox.Text = AddMessage(barcode + "数据更新完成");
+                            MsgTextBox.Text = AddMessage(barcode + "插入新数据");
+                            string[] arrField1 = { "BLDATE", "BLID", "BLNAME", "BLUID", "BLMID", "SCBARCODE" };
+                            string[] arrValue1 = { DateTime.Now.ToString(), CoorPar.ZhiJuBianHao, CoorPar.ZhiJuMingChen, CoorPar.ZheXianRenYuan, CoorPar.JiTaiBianHao, barcode };
+                            oraDB.insertSQL2(tablename1.ToUpper(), arrField1, arrValue1);
                             oraDB.disconnect();
                             return true;
-
                         }
                         else
                         {
@@ -1806,6 +1792,32 @@ namespace FQAPEE6AutoBreakPasteDeviceUI
                             oraDB.disconnect();
                             return false;
                         }
+                        //if (PanelDt.Rows[0]["BLID"].ToString() == "" || mode)
+                        //{
+                        //    string[,] arrFieldAndNewValue = { { "BLDATE", "to_date('" + DateTime.Now.ToString() + "', 'yyyy/mm/dd hh24:mi:ss')" }, { "BLID", CoorPar.ZhiJuBianHao }, { "BLNAME", CoorPar.ZhiJuMingChen }, { "BLUID", CoorPar.ZheXianRenYuan }, { "BLMID", CoorPar.JiTaiBianHao } };
+
+                        //    string[,] arrFieldAndOldValue = { { "SCBARCODE", barcode } };
+                        //    oraDB.updateSQL2(tablename1.ToUpper(), arrFieldAndNewValue, arrFieldAndOldValue);
+
+                        //    if (!File.Exists(filename))
+                        //    {
+                        //        string[] heads = { "BLDATE", "BLID", "BLNAME", "BLUID", "BLMID", "SCBARCODE" };
+                        //        savetocsv(filename, heads);
+                        //    }
+                        //    string[] counts = { DateTime.Now.ToString(), CoorPar.ZhiJuBianHao, CoorPar.ZhiJuMingChen, CoorPar.ZheXianRenYuan, CoorPar.JiTaiBianHao, barcode };
+                        //    savetocsv(filename, counts);
+                            
+                        //    MsgTextBox.Text = AddMessage(barcode + "数据更新完成");
+                        //    oraDB.disconnect();
+                        //    return true;
+
+                        //}
+                        //else
+                        //{
+                        //    MsgTextBox.Text = AddMessage(barcode + " 条码重复");
+                        //    oraDB.disconnect();
+                        //    return false;
+                        //}
                     }
 
 
