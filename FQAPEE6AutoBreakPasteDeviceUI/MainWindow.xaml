@@ -8,7 +8,7 @@
         xmlns:halcon="clr-namespace:HalconDotNet;assembly=halcondotnet"
         
         mc:Ignorable="d"
-        Title="FQAPEE6AutoBreakPasteDeviceUI 2019041501" Height="600" Width="1024"
+        Title="FQAPEE6AutoBreakPasteDeviceUI 2019051401" Height="600" Width="1024"
                    WindowStartupLocation="CenterScreen"
                      BorderThickness="0" GlowBrush="Black"  ResizeMode="CanResizeWithGrip" WindowTransitionsEnabled="True" Loaded="MetroWindow_Loaded" Closed="MetroWindow_Closed" Closing="MetroWindow_Closing" WindowState="Maximized">
     <metro:MetroWindow.Resources>
@@ -110,7 +110,7 @@
                             <Button Content="创建直线" Click="CreateButton_Click1" Style="{StaticResource ButtonBase}"></Button>
                             <Button Content="模板直线" Click="FunctionTest_Click" Style="{StaticResource ButtonBase}"></Button>
                         </StackPanel>
-                        <StackPanel Orientation="Horizontal">
+                        <StackPanel  Visibility="Collapsed" Orientation="Horizontal">
                             <TextBlock Style="{StaticResource TextBlockBase}" Text="模板阈值 "></TextBlock>
                             <TextBox Style="{StaticResource TextBoxPort}" Width="50" Name="MuBanContrast" TextChanged="MuBanContrast_TextChanged" HorizontalContentAlignment="Center"></TextBox>
                         </StackPanel>

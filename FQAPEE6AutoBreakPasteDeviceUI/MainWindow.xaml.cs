@@ -295,7 +295,7 @@ namespace FQAPEE6AutoBreakPasteDeviceUI
                 ImgReduced.InspectShapeModel(out ModelRegion, 1, 15);
                 //                ShapeModel = new HShapeModel(ImgReduced, 6, 0, new HTuple(360.0).TupleRad().D,
                 //new HTuple(0.4391).TupleRad().D, "no_pregeneration", "use_polarity", 16, 4);
-                ShapeModel = new HShapeModel(ImgReduced, new HTuple(6), 0, new HTuple(360.0).TupleRad().D, new HTuple(0.435).TupleRad(),
+                ShapeModel = new HShapeModel(ImgReduced, new HTuple(6), -0.52, 1.05, new HTuple(0.435).TupleRad(),
                     new HTuple("none").TupleConcat("no_pregeneration"), "use_polarity", new HTuple(10).TupleConcat(15).TupleConcat(4), new HTuple(5)
                     );
 
@@ -2366,8 +2366,8 @@ namespace FQAPEE6AutoBreakPasteDeviceUI
             HOperatorSet.GenRectangle1(out Rec1, 500, 100, 1700, 1200);
             HRegion Region1 = new HRegion(Rec1);
             HImage imgreduced = image.ReduceDomain(Region1);
-            ShapeModel.FindShapeModel(imgreduced, 0,
-                    new HTuple(360).TupleRad().D, 0.5, 1,
+            ShapeModel.FindShapeModel(imgreduced, -0.5,
+                    1.04, 0.5, 1,
                     0.5, new HTuple("least_squares"),
                     new HTuple(4).TupleConcat(1), 0.9, out RowCheck, out ColumnCheck,
                     out AngleCheck, out Score);
