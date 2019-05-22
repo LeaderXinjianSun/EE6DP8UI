@@ -1770,7 +1770,7 @@ namespace FQAPEE6AutoBreakPasteDeviceUI
                     {
                         MsgTextBox.Text = AddMessage(barcode + "插入新数据");
                         string[] arrField1 = { "BLDATE", "BLID", "BLNAME", "BLUID", "BLMID", "SCBARCODE" };
-                        string[] arrValue1 = { DateTime.Now.ToString(), CoorPar.ZhiJuBianHao, CoorPar.ZhiJuMingChen, CoorPar.ZheXianRenYuan, CoorPar.JiTaiBianHao, barcode };
+                        string[] arrValue1 = { "to_date('" + DateTime.Now.ToString() + "', 'yyyy/mm/dd hh24:mi:ss')", CoorPar.ZhiJuBianHao, CoorPar.ZhiJuMingChen, CoorPar.ZheXianRenYuan, CoorPar.JiTaiBianHao, barcode };
                         oraDB.insertSQL2(tablename1.ToUpper(), arrField1, arrValue1);
                         oraDB.disconnect();
                         return true;
@@ -1781,7 +1781,7 @@ namespace FQAPEE6AutoBreakPasteDeviceUI
                         {
                             MsgTextBox.Text = AddMessage(barcode + "插入新数据");
                             string[] arrField1 = { "BLDATE", "BLID", "BLNAME", "BLUID", "BLMID", "SCBARCODE" };
-                            string[] arrValue1 = { DateTime.Now.ToString(), CoorPar.ZhiJuBianHao, CoorPar.ZhiJuMingChen, CoorPar.ZheXianRenYuan, CoorPar.JiTaiBianHao, barcode };
+                            string[] arrValue1 = { "to_date('" + DateTime.Now.ToString() + "', 'yyyy/mm/dd hh24:mi:ss')", CoorPar.ZhiJuBianHao, CoorPar.ZhiJuMingChen, CoorPar.ZheXianRenYuan, CoorPar.JiTaiBianHao, barcode };
                             oraDB.insertSQL2(tablename1.ToUpper(), arrField1, arrValue1);
                             oraDB.disconnect();
                             return true;
