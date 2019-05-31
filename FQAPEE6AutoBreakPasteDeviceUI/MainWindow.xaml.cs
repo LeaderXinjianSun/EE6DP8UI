@@ -80,7 +80,7 @@ namespace FQAPEE6AutoBreakPasteDeviceUI
         long opendoorsec;
         long leisuresec;
         bool opendoorflag = false, leisureflag = false;
-        int tumotimes;
+        int tumotimes,juanliaocount;
         int fanzhuanFailTimes, scanFailTimes;
         //delegate void DeviceLostRouteEventHandler(object sender, DeviceLostEventArgs e);
         //public class DeviceLostEventArgs : RoutedEventArgs
@@ -337,18 +337,27 @@ namespace FQAPEE6AutoBreakPasteDeviceUI
                 try
                 {
                     hdev_export.CloseCamera();
-                    FileStream fileStream = new FileStream(System.Environment.CurrentDirectory + "\\CoorPar.dat", FileMode.Create);
-                    BinaryFormatter b = new BinaryFormatter();
-                    b.Serialize(fileStream, CoorPar);
-                    fileStream.Close();
-                    dispatcherTimer1.Stop();
+
                 }
                 catch
                 {
 
 
                 }
+                try
+                {
+                    FileStream fileStream = new FileStream(System.Environment.CurrentDirectory + "\\CoorPar.dat", FileMode.Create);
+                    BinaryFormatter b = new BinaryFormatter();
+                    b.Serialize(fileStream, CoorPar);
+                    fileStream.Close();
+                    dispatcherTimer1.Stop();
+                }
+                catch 
+                {
 
+                    
+                }
+   
 
             }
 
@@ -1750,6 +1759,42 @@ namespace FQAPEE6AutoBreakPasteDeviceUI
             }
             return r;
         }
+        private bool CheckGUMBAR(string str)
+        {
+            try
+            {
+                OraDB oraDB = new OraDB("fpcsfcdb", "sfcdar", "sfcdardata");
+                string tablename1 = "sfcdata.zx_pnl_data";
+                string[] arrField = new string[1];
+                string[] arrValue = new string[1];
+                if (oraDB.isConnect())
+                {
+                    arrField[0] = "GUMBAR";
+                    arrValue[0] = str;
+                    DataSet s1 = oraDB.selectSQL(tablename1.ToUpper(), arrField, arrValue);
+                    DataTable PanelDt = s1.Tables[0];
+                    if (PanelDt.Rows.Count == 0)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        MsgTextBox.Text = AddMessage("背胶码重复");
+                        return false;
+                    }
+                }
+                else
+                {
+                    MsgTextBox.Text = AddMessage("数据库未连接");
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                MsgTextBox.Text = AddMessage(ex.Message);
+                return false;
+            }
+        }
         private bool UpdateRecode(string barcode, bool mode)
         {
             string filename = "D:\\record\\" + GetRecordFileName() + ".csv";
@@ -1769,8 +1814,8 @@ namespace FQAPEE6AutoBreakPasteDeviceUI
                     if (PanelDt.Rows.Count == 0)
                     {
                         MsgTextBox.Text = AddMessage(barcode + "插入新数据");
-                        string[] arrField1 = { "BLDATE", "BLID", "BLNAME", "BLUID", "BLMID", "SCBARCODE" };
-                        string[] arrValue1 = { "to_date('" + DateTime.Now.ToString() + "', 'yyyy/mm/dd hh24:mi:ss')", CoorPar.ZhiJuBianHao, CoorPar.ZhiJuMingChen, CoorPar.ZheXianRenYuan, CoorPar.JiTaiBianHao, barcode };
+                        string[] arrField1 = { "BLDATE", "BLID", "BLNAME", "BLUID", "BLMID", "SCBARCODE", "GUMBAR" };
+                        string[] arrValue1 = { "to_date('" + DateTime.Now.ToString() + "', 'yyyy/mm/dd hh24:mi:ss')", CoorPar.ZhiJuBianHao, CoorPar.ZhiJuMingChen, CoorPar.ZheXianRenYuan, CoorPar.JiTaiBianHao, barcode, CoorPar.JuanLiaoXinXi };
                         oraDB.insertSQL2(tablename1.ToUpper(), arrField1, arrValue1);
                         oraDB.disconnect();
                         return true;
@@ -1780,8 +1825,8 @@ namespace FQAPEE6AutoBreakPasteDeviceUI
                         if (mode)
                         {
                             MsgTextBox.Text = AddMessage(barcode + "插入新数据");
-                            string[] arrField1 = { "BLDATE", "BLID", "BLNAME", "BLUID", "BLMID", "SCBARCODE" };
-                            string[] arrValue1 = { "to_date('" + DateTime.Now.ToString() + "', 'yyyy/mm/dd hh24:mi:ss')", CoorPar.ZhiJuBianHao, CoorPar.ZhiJuMingChen, CoorPar.ZheXianRenYuan, CoorPar.JiTaiBianHao, barcode };
+                            string[] arrField1 = { "BLDATE", "BLID", "BLNAME", "BLUID", "BLMID", "SCBARCODE", "GUMBAR" };
+                            string[] arrValue1 = { "to_date('" + DateTime.Now.ToString() + "', 'yyyy/mm/dd hh24:mi:ss')", CoorPar.ZhiJuBianHao, CoorPar.ZhiJuMingChen, CoorPar.ZheXianRenYuan, CoorPar.JiTaiBianHao, barcode, CoorPar.JuanLiaoXinXi };
                             oraDB.insertSQL2(tablename1.ToUpper(), arrField1, arrValue1);
                             oraDB.disconnect();
                             return true;
@@ -2821,11 +2866,6 @@ namespace FQAPEE6AutoBreakPasteDeviceUI
             CoorPar.ZhiJuMingChen = ZhiJuMingChen.Text;
         }
 
-        private void ZheXianRenYuan_LostFocus(object sender, RoutedEventArgs e)
-        {
-            CoorPar.ZheXianRenYuan = ZheXianRenYuan.Text;
-        }
-
         private void JiTaiBianHao_LostFocus(object sender, RoutedEventArgs e)
         {
             CoorPar.JiTaiBianHao = JiTaiBianHao.Text;
@@ -3027,6 +3067,36 @@ namespace FQAPEE6AutoBreakPasteDeviceUI
             }
 
         }
+
+        private void 卷料信息_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            if (e.Key == Key.Return)
+            {
+                MsgTextBox.Text = AddMessage(卷料信息.Text);
+                if (CheckGUMBAR(卷料信息.Text))
+                {
+                    CoorPar.JuanLiaoXinXi = 卷料信息.Text;
+                    string[] ss = 卷料信息.Text.Split(new char[] { '/' });
+                    try
+                    {
+                        juanliaocount = int.Parse(ss[3]);
+                        MsgTextBox.Text = AddMessage("更换卷料：" + ss[3]);
+                        Inifile.INIWriteValue(maintainIniFilename, "maintain", "juanliaocount", juanliaocount.ToString());
+                        TextJuanLiaoCount.Text = juanliaocount.ToString();
+                    }
+                    catch(Exception ex)
+                    {
+                        MsgTextBox.Text = AddMessage(ex.Message);
+                    }                    
+                } 
+            }
+        }
+
+        private void ZheXianRenYuan_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            CoorPar.ZheXianRenYuan = ZheXianRenYuan.Text;
+        }
+
         private void LM9Checkbox_Checked(object sender, RoutedEventArgs e)
         {
             LoadinCount = 0;
@@ -3172,6 +3242,7 @@ namespace FQAPEE6AutoBreakPasteDeviceUI
             ZhiJuMingChen.Text = CoorPar.ZhiJuMingChen;
             ZheXianRenYuan.Text = CoorPar.ZheXianRenYuan;
             JiTaiBianHao.Text = CoorPar.JiTaiBianHao;
+            卷料信息.Text = CoorPar.JuanLiaoXinXi;
             if (CoorPar.MuBanContrast != null)
             {
                 MuBanContrast.Text = CoorPar.MuBanContrast.D.ToString();
@@ -3273,14 +3344,14 @@ namespace FQAPEE6AutoBreakPasteDeviceUI
                     default:
                         break;
                 }
-                //PLCRun();
+          
             }
             catch (Exception ex)
             {
                 PlcStatus = false;
                 MsgTextBox.Text = AddMessage(ex.Message);
             }
-            PLCRun();
+            //PLCRun();
             ImageFiles = Directory.GetFiles(@"D:\image");
             if (ImageFiles.Length >= 1000)
             {
@@ -3302,8 +3373,10 @@ namespace FQAPEE6AutoBreakPasteDeviceUI
             TextOpenDoor.Text = ((double)opendoorsec / 3600).ToString("F2");
             leisuresec = long.Parse(Inifile.INIGetStringValue(maintainIniFilename, "maintain", "leisuresec", "0"));
             TextLeisure.Text = ((double)leisuresec / 3600).ToString("F2");
-            tumotimes = int.Parse(Inifile.INIGetStringValue(maintainIniFilename, "maintain", "tumotimes", "0"));
+            tumotimes = int.Parse(Inifile.INIGetStringValue(maintainIniFilename, "maintain", "tumotimes", "0"));            
             TextTumoTimes.Text = tumotimes.ToString();
+            juanliaocount = int.Parse(Inifile.INIGetStringValue(maintainIniFilename, "maintain", "juanliaocount", "100"));
+            TextJuanLiaoCount.Text = juanliaocount.ToString();
             fanzhuanFailTimes = int.Parse(Inifile.INIGetStringValue(maintainIniFilename, "maintain", "fanzhuanFailTimes", "0"));
             TextFanZhuanFailTimes.Text = fanzhuanFailTimes.ToString();
             scanFailTimes = int.Parse(Inifile.INIGetStringValue(maintainIniFilename, "maintain", "scanFailTimes", "0"));
@@ -3482,6 +3555,7 @@ namespace FQAPEE6AutoBreakPasteDeviceUI
         public string ZhiJuMingChen;
         public string ZheXianRenYuan;
         public string JiTaiBianHao;
+        public string JuanLiaoXinXi;
 
         public void Calc()
         {

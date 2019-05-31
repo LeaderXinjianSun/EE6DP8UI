@@ -8,7 +8,7 @@
         xmlns:halcon="clr-namespace:HalconDotNet;assembly=halcondotnet"
         
         mc:Ignorable="d"
-        Title="FQAPEE6AutoBreakPasteDeviceUI 2019051402" Height="600" Width="1024"
+        Title="FQAPEE6AutoBreakPasteDeviceUI 2019053001" Height="600" Width="1024"
                    WindowStartupLocation="CenterScreen"
                      BorderThickness="0" GlowBrush="Black"  ResizeMode="CanResizeWithGrip" WindowTransitionsEnabled="True" Loaded="MetroWindow_Loaded" Closed="MetroWindow_Closed" Closing="MetroWindow_Closing" WindowState="Maximized">
     <metro:MetroWindow.Resources>
@@ -89,10 +89,17 @@
                         <StackPanel Orientation="Horizontal" >
 
                             <TextBlock Text="折线人员" Style="{StaticResource TextBlockParameterMidName}"></TextBlock>
-                            <TextBox x:Name="ZheXianRenYuan" LostFocus="ZheXianRenYuan_LostFocus" Width="80" Style="{StaticResource TextBoxPort}"></TextBox>
+                            <TextBox x:Name="ZheXianRenYuan" TextChanged="ZheXianRenYuan_TextChanged" Width="80" Style="{StaticResource TextBoxPort}"></TextBox>
                             <TextBlock Text="机台编号" Style="{StaticResource TextBlockParameterMidName}"></TextBlock>
                             <TextBox x:Name="JiTaiBianHao" Width="80" LostFocus="JiTaiBianHao_LostFocus" Style="{StaticResource TextBoxPort}"></TextBox>
+                            
                         </StackPanel>
+                        <StackPanel Orientation="Horizontal" >
+                            <TextBlock Text="卷料信息" Style="{StaticResource TextBlockParameterMidName}"></TextBlock>
+                        </StackPanel>
+                        <Grid Height="60">
+                            <TextBox x:Name="卷料信息" KeyDown="卷料信息_KeyDown" TabIndex = "0" TextWrapping="Wrap" VerticalScrollBarVisibility="Visible"></TextBox>
+                        </Grid>
                     </StackPanel>
                 </TabItem>
                 <TabItem Header="创建" Name="ChuangJianTabItem">
@@ -229,6 +236,11 @@
                         <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
                             <TextBlock Margin="10,0,10,0" Text="吐膜计数"></TextBlock>
                             <TextBlock Name="TextTumoTimes"></TextBlock>
+                            <TextBlock Text="pcs" Margin="10,0"></TextBlock>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+                            <TextBlock Margin="10,0,10,0" Text="卷料计数"></TextBlock>
+                            <TextBlock Name="TextJuanLiaoCount"></TextBlock>
                             <TextBlock Text="pcs" Margin="10,0"></TextBlock>
                         </StackPanel>
                     </StackPanel>
