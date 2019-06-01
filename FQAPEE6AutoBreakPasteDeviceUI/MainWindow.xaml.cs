@@ -80,7 +80,7 @@ namespace FQAPEE6AutoBreakPasteDeviceUI
         long opendoorsec;
         long leisuresec;
         bool opendoorflag = false, leisureflag = false;
-        int tumotimes,juanliaocount;
+        int tumotimes;
         int fanzhuanFailTimes, scanFailTimes;
         //delegate void DeviceLostRouteEventHandler(object sender, DeviceLostEventArgs e);
         //public class DeviceLostEventArgs : RoutedEventArgs
@@ -1818,6 +1818,13 @@ namespace FQAPEE6AutoBreakPasteDeviceUI
                         string[] arrValue1 = { "to_date('" + DateTime.Now.ToString() + "', 'yyyy/mm/dd hh24:mi:ss')", CoorPar.ZhiJuBianHao, CoorPar.ZhiJuMingChen, CoorPar.ZheXianRenYuan, CoorPar.JiTaiBianHao, barcode, CoorPar.JuanLiaoXinXi };
                         oraDB.insertSQL2(tablename1.ToUpper(), arrField1, arrValue1);
                         oraDB.disconnect();
+                        if (!File.Exists(filename))
+                        {
+                            string[] heads = { "BLDATE", "BLID", "BLNAME", "BLUID", "BLMID", "SCBARCODE", "GUMBAR" };
+                            savetocsv(filename, heads);
+                        }
+                        string[] counts = { DateTime.Now.ToString(), CoorPar.ZhiJuBianHao, CoorPar.ZhiJuMingChen, CoorPar.ZheXianRenYuan, CoorPar.JiTaiBianHao, barcode, CoorPar.JuanLiaoXinXi };
+                        savetocsv(filename, counts);
                         return true;
                     }
                     else
@@ -1829,6 +1836,13 @@ namespace FQAPEE6AutoBreakPasteDeviceUI
                             string[] arrValue1 = { "to_date('" + DateTime.Now.ToString() + "', 'yyyy/mm/dd hh24:mi:ss')", CoorPar.ZhiJuBianHao, CoorPar.ZhiJuMingChen, CoorPar.ZheXianRenYuan, CoorPar.JiTaiBianHao, barcode, CoorPar.JuanLiaoXinXi };
                             oraDB.insertSQL2(tablename1.ToUpper(), arrField1, arrValue1);
                             oraDB.disconnect();
+                            if (!File.Exists(filename))
+                            {
+                                string[] heads = { "BLDATE", "BLID", "BLNAME", "BLUID", "BLMID", "SCBARCODE", "GUMBAR" };
+                                savetocsv(filename, heads);
+                            }
+                            string[] counts = { DateTime.Now.ToString(), CoorPar.ZhiJuBianHao, CoorPar.ZhiJuMingChen, CoorPar.ZheXianRenYuan, CoorPar.JiTaiBianHao, barcode, CoorPar.JuanLiaoXinXi };
+                            savetocsv(filename, counts);
                             return true;
                         }
                         else
@@ -1910,6 +1924,7 @@ namespace FQAPEE6AutoBreakPasteDeviceUI
                 {
                     lock (modbustcp)
                     {
+                        TextJuanLiaoCount.Text = aS300ModbusTCP.ReadRegisters("D20042", 1)[0].ToString();
                         PLC_In = aS300ModbusTCP.ReadCoils("M5000", 96);
                         CX = aS300ModbusTCP.ReadDWORD("D6");
                         TextX1.Text = ((double)CX / 100).ToString();
@@ -3079,10 +3094,15 @@ namespace FQAPEE6AutoBreakPasteDeviceUI
                     string[] ss = 卷料信息.Text.Split(new char[] { '/' });
                     try
                     {
-                        juanliaocount = int.Parse(ss[3]);
+                        
+                        lock (modbustcp)
+                        {
+                            aS300ModbusTCP.WriteSigleRegister("D20042", short.Parse(ss[3]));
+                        }
+
                         MsgTextBox.Text = AddMessage("更换卷料：" + ss[3]);
-                        Inifile.INIWriteValue(maintainIniFilename, "maintain", "juanliaocount", juanliaocount.ToString());
-                        TextJuanLiaoCount.Text = juanliaocount.ToString();
+
+                        
                     }
                     catch(Exception ex)
                     {
@@ -3351,7 +3371,7 @@ namespace FQAPEE6AutoBreakPasteDeviceUI
                 PlcStatus = false;
                 MsgTextBox.Text = AddMessage(ex.Message);
             }
-            //PLCRun();
+            PLCRun();
             ImageFiles = Directory.GetFiles(@"D:\image");
             if (ImageFiles.Length >= 1000)
             {
@@ -3375,8 +3395,7 @@ namespace FQAPEE6AutoBreakPasteDeviceUI
             TextLeisure.Text = ((double)leisuresec / 3600).ToString("F2");
             tumotimes = int.Parse(Inifile.INIGetStringValue(maintainIniFilename, "maintain", "tumotimes", "0"));            
             TextTumoTimes.Text = tumotimes.ToString();
-            juanliaocount = int.Parse(Inifile.INIGetStringValue(maintainIniFilename, "maintain", "juanliaocount", "100"));
-            TextJuanLiaoCount.Text = juanliaocount.ToString();
+
             fanzhuanFailTimes = int.Parse(Inifile.INIGetStringValue(maintainIniFilename, "maintain", "fanzhuanFailTimes", "0"));
             TextFanZhuanFailTimes.Text = fanzhuanFailTimes.ToString();
             scanFailTimes = int.Parse(Inifile.INIGetStringValue(maintainIniFilename, "maintain", "scanFailTimes", "0"));
