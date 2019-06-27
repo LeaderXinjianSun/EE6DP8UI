@@ -3097,7 +3097,7 @@ namespace FQAPEE6AutoBreakPasteDeviceUI
                         
                         lock (modbustcp)
                         {
-                            aS300ModbusTCP.WriteSigleRegister("D20042", short.Parse(ss[3]));
+                            aS300ModbusTCP.WriteSigleRegister("D20042", (short)(int.Parse(ss[3]) + 200));
                         }
 
                         MsgTextBox.Text = AddMessage("更换卷料：" + ss[3]);
@@ -3318,7 +3318,7 @@ namespace FQAPEE6AutoBreakPasteDeviceUI
             }
             if (!File.Exists("D:\\maintain.csv"))
             {
-                string[] heads = { "BLDATE", "BLID", "BLNAME", "BLUID", "BLMID", "OpenDoor", "Leisure", "TumoTimes", "FanZhuanFailTimes", "ScanFailTimes" };
+                string[] heads = { "BLDATE", "BLID", "BLNAME", "BLUID", "BLMID", "OpenDoor", "Leisure", "TumoTimes", "FanZhuanFailTimes", "ScanFailTimes", "PNLCount", "PCSCount" };
                 savetocsv("D:\\maintain.csv", heads);
             }
             aS300ModbusTCP = new AS300ModbusTCP();
@@ -3449,7 +3449,15 @@ namespace FQAPEE6AutoBreakPasteDeviceUI
             {
                 string[] heads = { "BLDATE", "BLID", "BLNAME", "BLUID", "BLMID", "Action" };
                 savetocsv(maintainCsvFilename, heads);
-                string[] counts = { DateTime.Now.ToString(), CoorPar.ZhiJuBianHao, CoorPar.ZhiJuMingChen, CoorPar.ZheXianRenYuan, CoorPar.JiTaiBianHao, ((double)opendoorsec / 3600).ToString("F2"), ((double)leisuresec / 3600).ToString("F2"), tumotimes.ToString(), fanzhuanFailTimes.ToString(), scanFailTimes.ToString() };
+                int pnl_count, pcs_count;
+                lock (modbustcp)
+                {
+                    pnl_count = aS300ModbusTCP.ReadDWORD("D20030");
+                    pcs_count = aS300ModbusTCP.ReadDWORD("D20046");
+                    aS300ModbusTCP.WriteDWORD("D20030", 0);
+                    aS300ModbusTCP.WriteDWORD("D20046", 0);
+                }
+                string[] counts = { DateTime.Now.ToString(), CoorPar.ZhiJuBianHao, CoorPar.ZhiJuMingChen, CoorPar.ZheXianRenYuan, CoorPar.JiTaiBianHao, ((double)opendoorsec / 3600).ToString("F2"), ((double)leisuresec / 3600).ToString("F2"), tumotimes.ToString(), fanzhuanFailTimes.ToString(), scanFailTimes.ToString(), pnl_count.ToString(), pcs_count.ToString() };
                 savetocsv("D:\\maintain.csv", counts);
                 opendoorsec = 0;
                 leisuresec = 0;

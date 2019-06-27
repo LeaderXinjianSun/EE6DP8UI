@@ -8,7 +8,7 @@
         xmlns:halcon="clr-namespace:HalconDotNet;assembly=halcondotnet"
         
         mc:Ignorable="d"
-        Title="FQAPEE6AutoBreakPasteDeviceUI 2019060101" Height="600" Width="1024"
+        Title="FQAPEE6AutoBreakPasteDeviceUI 2019062701" Height="600" Width="1024"
                    WindowStartupLocation="CenterScreen"
                      BorderThickness="0" GlowBrush="Black"  ResizeMode="CanResizeWithGrip" WindowTransitionsEnabled="True" Loaded="MetroWindow_Loaded" Closed="MetroWindow_Closed" Closing="MetroWindow_Closing" WindowState="Maximized">
     <metro:MetroWindow.Resources>
