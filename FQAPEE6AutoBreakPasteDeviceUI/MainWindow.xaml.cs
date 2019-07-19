@@ -77,11 +77,13 @@ namespace FQAPEE6AutoBreakPasteDeviceUI
         int EE6Mode;
         int LoadinCount = 0;
         string maintainIniFilename = "D:\\maintain\\" + "maintain.ini";
+        string Paramaterini = System.Environment.CurrentDirectory + "\\Parameter.ini";
         long opendoorsec;
         long leisuresec;
         bool opendoorflag = false, leisureflag = false;
         int tumotimes;
         int fanzhuanFailTimes, scanFailTimes;
+        string BaoYangHour = "";
         //delegate void DeviceLostRouteEventHandler(object sender, DeviceLostEventArgs e);
         //public class DeviceLostEventArgs : RoutedEventArgs
         //{
@@ -3291,6 +3293,7 @@ namespace FQAPEE6AutoBreakPasteDeviceUI
             hdev_export.ReadImage(System.Environment.CurrentDirectory + "\\ModelImage.tiff");
             image = new HImage(hdev_export.ho_Image);
             hSmartWindowControlWPF1.HalconWindow.DispObj(image);
+            BaoYangHour = Inifile.INIGetStringValue(Paramaterini, "BaoYang", "BaoYangHour", "0");
             dispatcherTimer.Tick += new EventHandler(DispatcherTimerAction);
             dispatcherTimer.Interval = new TimeSpan(0, 0, 1);
             dispatcherTimer1.Tick += new EventHandler(DispatcherTimer1Action);
@@ -3443,6 +3446,18 @@ namespace FQAPEE6AutoBreakPasteDeviceUI
         }
         private void DispatcherTimer1Action(Object sender, EventArgs e)
         {
+            
+
+            if (BaoYangHour != DateTime.Now.Hour.ToString())
+            {
+                if (DateTime.Now.Hour.ToString() == "7" || DateTime.Now.Hour.ToString() == "19")
+                {
+                    BaoYangHour = DateTime.Now.Hour.ToString();
+                    Inifile.INIWriteValue(Paramaterini, "BaoYang", "BaoYangHour", BaoYangHour.ToString());
+                    aS300ModbusTCP.WriteSigleCoil("M6008", true);
+                    MsgTextBox.Text = AddMessage("发出保养命令");
+                }
+            }
             string maintainCsvFilename = "D:\\maintain\\" + GetRecordFileName() + "maintain.csv";
 
             if (!File.Exists(maintainCsvFilename))
