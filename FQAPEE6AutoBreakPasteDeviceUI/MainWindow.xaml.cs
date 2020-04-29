@@ -826,11 +826,14 @@ namespace FQAPEE6AutoBreakPasteDeviceUI
             //shuxian_y += ColumnCheck.D - CoorPar.MoBan.column;
             shuxian_x = CoorPar.ShuXiam.row;
             shuxian_y = CoorPar.ShuXiam.column;
+            //double _x = CoorPar.ShuXiam.length1 * Math.Tan(CoorPar.ShuXiam.phi);
             //HObject Rec1;
             //HOperatorSet.GenRectangle2(out Rec1, shuxian_x, shuxian_y, CoorPar.ShuXiam.phi + AngleCheck.D, CoorPar.ShuXiam.length1, CoorPar.ShuXiam.length2);
             //HRegion Rec1Region = new HRegion(Rec1);
-            RolConvert(shuxian_x + 90, shuxian_y, CoorPar.MoBan.row, CoorPar.MoBan.column, AngleCheck.D, out line1r1, out line1c1);
-            RolConvert(shuxian_x - 90, shuxian_y, CoorPar.MoBan.row, CoorPar.MoBan.column, AngleCheck.D, out line1r2, out line1c2);
+            double _x = CoorPar.ShuXiam.length1 * Math.Sin(CoorPar.ShuXiam.phi);
+            double _y = CoorPar.ShuXiam.length1 * Math.Cos(CoorPar.ShuXiam.phi);
+            RolConvert(shuxian_x + _x/2, shuxian_y - _y/2, CoorPar.MoBan.row, CoorPar.MoBan.column, AngleCheck.D, out line1r1, out line1c1);
+            RolConvert(shuxian_x - _x / 2, shuxian_y + _y / 2, CoorPar.MoBan.row, CoorPar.MoBan.column, AngleCheck.D, out line1r2, out line1c2);
             line1r1 += RowCheck.D - CoorPar.MoBan.row;
             line1c1 += ColumnCheck.D - CoorPar.MoBan.column;
             line1r2 += RowCheck.D - CoorPar.MoBan.row;
@@ -847,11 +850,13 @@ namespace FQAPEE6AutoBreakPasteDeviceUI
             //hengxian_y += ColumnCheck.D - CoorPar.MoBan.column;
             hengxian_x = CoorPar.HengXiam.row;
             hengxian_y = CoorPar.HengXiam.column;
+            _x = CoorPar.HengXiam.length1 * Math.Sin(CoorPar.HengXiam.phi);
+            _y = CoorPar.HengXiam.length1 * Math.Cos(CoorPar.HengXiam.phi);
             //HObject Rec2;
             //HOperatorSet.GenRectangle2(out Rec2, hengxian_x, hengxian_y, CoorPar.HengXiam.phi + AngleCheck.D, CoorPar.HengXiam.length1, CoorPar.HengXiam.length2);
             //HRegion Rec2Region = new HRegion(Rec2);
-            RolConvert(hengxian_x, hengxian_y - 200, CoorPar.MoBan.row, CoorPar.MoBan.column, AngleCheck.D, out line2r1, out line2c1);
-            RolConvert(hengxian_x, hengxian_y + 200, CoorPar.MoBan.row, CoorPar.MoBan.column, AngleCheck.D, out line2r2, out line2c2);
+            RolConvert(hengxian_x + _x / 2, hengxian_y - _y / 2, CoorPar.MoBan.row, CoorPar.MoBan.column, AngleCheck.D, out line2r1, out line2c1);
+            RolConvert(hengxian_x - _x / 2, hengxian_y + _y / 2, CoorPar.MoBan.row, CoorPar.MoBan.column, AngleCheck.D, out line2r2, out line2c2);
             //line2r1 = hengxian_x;
             //line2c1 = hengxian_y - 200;
             //line2r2 = hengxian_x;
@@ -1971,17 +1976,18 @@ namespace FQAPEE6AutoBreakPasteDeviceUI
                                         DD12 = (int)((CrossPoint[1] - CoorPar.Y0) * -1 / CoorPar.DisT);
                                         DD14 = (int)(((CrossPoint[0] - CoorPar.X0)) * -1 / CoorPar.DisT);
                                         //DD16 = Convert.ToInt32(((CoorPar.Line1Angle + CoorPar.Line2Angle - Line1Angle - Line2Angle) / 2 / Math.PI * 180) * 100);
+                                        Double newangle;
                                         if (AngleCheck.D > Math.PI)
                                         {
-                                            DD16 = Convert.ToInt32(((AngleCheck.D - 2 * Math.PI) / Math.PI * 180) * 100);
-
+                                            newangle = AngleCheck.D - 2 * Math.PI;
                                             //MsgTextBox.Text = AddMessage(( - Line1Angle + CoorPar.Line1Angle).ToString() + "," + (Line2Angle - CoorPar.Line2Angle).ToString() +"," + (AngleCheck.D - 2 * Math.PI).ToString());
                                         }
                                         else
                                         {
-                                            DD16 = Convert.ToInt32((AngleCheck.D / Math.PI * 180) * 100);
+                                            newangle = AngleCheck.D;
                                             //MsgTextBox.Text = AddMessage(( - Line1Angle + CoorPar.Line1Angle).ToString() + "," + (Line2Angle - CoorPar.Line2Angle).ToString() + "," + AngleCheck.D .ToString());
                                         }
+                                        DD16 = Convert.ToInt32(((CoorPar.Line2Angle - newangle) * -1 / Math.PI * 180) * 100);
                                         if (DD12 > 1000 || DD12 < -1000 || DD14 > 1000 || DD14 < -1000 || DD16 > 2000 || DD16 < -2000)
                                         {
                                             lock (modbustcp)
@@ -2437,7 +2443,7 @@ namespace FQAPEE6AutoBreakPasteDeviceUI
             //        4, 0.9, out RowCheck, out ColumnCheck,
             //        out AngleCheck, out ScaleCheck, out Score);
             HObject Rec1;
-            HOperatorSet.GenRectangle1(out Rec1, 500, 100, 1700, 1200);
+            HOperatorSet.GenRectangle1(out Rec1, 545, 372, 1459, 1655);
             HRegion Region1 = new HRegion(Rec1);
             HImage imgreduced = image.ReduceDomain(Region1);
             ShapeModel.FindShapeModel(imgreduced, -0.5,
@@ -2448,7 +2454,7 @@ namespace FQAPEE6AutoBreakPasteDeviceUI
             Window.SetColor("green");
             Window.SetDraw("margin");
             HObject rec;
-            HOperatorSet.GenRectangle1(out rec, 500, 100, 1700, 1200);
+            HOperatorSet.GenRectangle1(out rec, 545, 372, 1459, 1655);
             rec.DispObj(Window);
 
             if (RowCheck.Length == 1)
@@ -2595,6 +2601,7 @@ namespace FQAPEE6AutoBreakPasteDeviceUI
                 rec2.length1 = hv_ParamValues.DArr[3];
                 rec2.length2 = hv_ParamValues.DArr[4];
                 CoorPar.ShuXiam = rec2;
+               
                 FileStream fileStream = new FileStream(System.Environment.CurrentDirectory + "\\CoorPar.dat", FileMode.Create);
                 BinaryFormatter b = new BinaryFormatter();
                 b.Serialize(fileStream, CoorPar);
@@ -2671,10 +2678,24 @@ namespace FQAPEE6AutoBreakPasteDeviceUI
                 {
                     CoorPar.Line1Angle = Line1Angle;
                     CoorPar.Line1Dist = Line1Dist;
-                    CoorPar.Line2Angle = Line2Angle;
+                    if (AngleCheck.D > Math.PI)
+                    {
+                        CoorPar.Line2Angle = AngleCheck.D - 2 * Math.PI;
+                    }
+                    else
+                    {
+                        CoorPar.Line2Angle = AngleCheck.D;
+                    }
+
                     CoorPar.Line2Dist = Line2Dist;
                     CoorPar.X0 = CrossPoint[0];
                     CoorPar.Y0 = CrossPoint[1];
+
+                    FileStream fileStream = new FileStream(System.Environment.CurrentDirectory + "\\CoorPar.dat", FileMode.Create);
+                    BinaryFormatter b = new BinaryFormatter();
+                    b.Serialize(fileStream, CoorPar);
+                    fileStream.Close();
+
                     MsgTextBox.Text = AddMessage("直线保存成功");
                 }
                 else
